@@ -94,7 +94,7 @@ export default function Home() {
           type="button"
           onClick={() => {
             console.log(formSubmitValues)
-            router.push(`/dashboard/?${formSubmitValues.code}&${formSubmitValues.qty}`)
+            router.push(`/dashboard/?name=${formSubmitValues.code}&qty=${formSubmitValues.qty}`)
           }}
         >Submit</button>
       </form>
