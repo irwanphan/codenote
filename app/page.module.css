@@ -3,19 +3,32 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
+  padding: 2rem;
   min-height: 100vh;
 }
 
 .qrCodeScanner {
   width: 30rem;
-  height: 10rem;
-  /* object-fit: cover; */
+  height: 20rem;
+  border-radius: 1rem;
+}
+
+.qrCodeScanner button {
+  border: none;
+  border-radius: 0.5rem;
+  background-color: tomato;
+  color: bisque;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-weight: 500;
 }
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
-
+  .qrCodeScanner button:hover {
+    background-color: tomato;
+    color: white;
+  }
 }
 
 @media (prefers-reduced-motion) {

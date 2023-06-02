@@ -100,6 +100,19 @@ a {
   text-decoration: none;
 }
 
+#reader {
+  overflow: hidden;
+  position: relative;
+}
+#reader__scan_region img {
+  margin-top: 5rem;
+  width: 8rem;
+}
+#reader__dashboard {
+  position: absolute;
+  bottom: 0.5rem;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

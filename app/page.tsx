@@ -13,7 +13,7 @@ export default function Home() {
 
   const config = {
     fps: 10,
-    qrbox: {width: 360, height: 160},
+    qrbox: {width: 400, height: 160},
     rememberLastUsedCamera: true,
     // Only support camera scan type.
     supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
