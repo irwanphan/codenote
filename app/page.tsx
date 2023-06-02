@@ -2,18 +2,54 @@
 
 import { Html5QrcodeScanType, Html5QrcodeScanner } from 'html5-qrcode';
 import styles from './page.module.css'
-import { useEffect } from 'react'
+import { ChangeEvent, useEffect, useState, useRef } from 'react'
+
+type scannedCodeType = {
+  decodedText: string,
+  result: {
+    text: string,
+    format: {
+      format: number,
+      formatName: string
+    },
+    debugData: {
+      decoderName: string
+    }
+  }
+}
 
 export default function Home() {
+
+  const [ scannedCode, setScannedCode ] = useState<scannedCodeType>()
+  const [ formValues, setFormValues ] = useState({
+    qty: 0
+  })
+  const formSubmitValues = {
+    code: scannedCode?.decodedText,
+    ...formValues
+  }
+
+  const qtyRef = useRef<HTMLInputElement>(null)
+
+  const handleChanges = (e:ChangeEvent<HTMLInputElement>) => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value
+    })
+  }
 
   const onScanSuccess = (decodedText:any, decodedResult:any) => {
     // handle decoded results here
     console.log(`Scan result: ${decodedText}`, decodedResult)
+    setScannedCode({decodedText, result: decodedResult})
+    if (qtyRef.current != null) {
+      qtyRef.current.focus()
+    }
   }
 
   const config = {
     fps: 10,
-    qrbox: {width: 400, height: 160},
+    qrbox: {width: 320, height: 120},
     rememberLastUsedCamera: true,
     // Only support camera scan type.
     supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
@@ -30,6 +66,23 @@ export default function Home() {
     <main className={styles.main}>
 
       <div id="reader" className={styles.qrCodeScanner}></div>
+
+      <form className={styles.form}>
+        <input type="text" name='code' 
+          value={scannedCode?.decodedText} 
+          readOnly />
+        <input type="number" name='qty' 
+          ref={qtyRef}
+          onChange={(e) => handleChanges(e)} 
+          />
+
+        <button 
+          type="button"
+          onClick={() => {
+            console.log(formSubmitValues)
+          }}
+        >Submit</button>
+      </form>
 
     </main>
   )
