@@ -3,6 +3,7 @@
 import { Html5QrcodeScanType, Html5QrcodeScanner } from 'html5-qrcode';
 import styles from './page.module.css'
 import { ChangeEvent, useEffect, useState, useRef } from 'react'
+import { useRouter } from 'next/navigation';
 
 type scannedCodeType = {
   decodedText: string,
@@ -19,13 +20,26 @@ type scannedCodeType = {
 }
 
 export default function Home() {
+  const router = useRouter()
 
-  const [ scannedCode, setScannedCode ] = useState<scannedCodeType>()
+  const [ scannedCode, setScannedCode ] = useState<scannedCodeType>({
+    decodedText: '',
+    result: {
+      text: '',
+      format: {
+        format: 0,
+        formatName: ''
+      },
+      debugData: {
+        decoderName: ''
+      }
+    }
+  })
   const [ formValues, setFormValues ] = useState({
     qty: 0
   })
   const formSubmitValues = {
-    code: scannedCode?.decodedText,
+    code: scannedCode.decodedText,
     ...formValues
   }
 
@@ -80,6 +94,7 @@ export default function Home() {
           type="button"
           onClick={() => {
             console.log(formSubmitValues)
+            router.push(`/dashboard/?${formSubmitValues.code}&${formSubmitValues.qty}`)
           }}
         >Submit</button>
       </form>
