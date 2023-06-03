@@ -20,7 +20,7 @@ model Sales {
   updatedAt         DateTime           @updatedAt
   detail            SalesDetail[]
   user              User               @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  @@map("saless")
+  @@map("sales")
 }
 
 model SalesDetail {
@@ -31,7 +31,7 @@ model SalesDetail {
   qty               Float
   unit              String             @default("pcs")
   sales             Sales              @relation(fields: [salesId], references: [id])
-  @@map("sales_details")
+  @@map("sale_details")
 }
 
 model User {
