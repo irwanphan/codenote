@@ -1,104 +1,64 @@
 'use client'
+import './globals.css'
+import type { AppProps } from 'next/app'
+import { ChakraProvider } from '@chakra-ui/react'
+import theme from '@libs/theme'
+import { RecoilRoot } from 'recoil'
 
-import { Html5QrcodeScanType, Html5QrcodeScanner } from 'html5-qrcode';
-import styles from './page.module.css'
-import { ChangeEvent, useEffect, useState, useRef } from 'react'
-import { useRouter } from 'next/navigation';
+import { supabase } from '@libs/connections/supabase'
+import { type Session } from '@supabase/gotrue-js/src/lib/types'
+// import { SessionProvider } from "next-auth/react"
+import { useEffect, useState } from 'react'
+// import { PageProps } from 'types/types'
+import { AuthProvider } from '@contexts/authContext'
+import TokoAuth from '@/libs/components/TokoAuth'
+// import { useFetchSettings } from '@hooks/useFetchSettings'
 
-type scannedCodeType = {
-  decodedText: string,
-  result: {
-    text: string,
-    format: {
-      format: number,
-      formatName: string
-    },
-    debugData: {
-      decoderName: string
-    }
-  }
-}
-
-export default function Home() {
-  const router = useRouter()
-
-  const [ scannedCode, setScannedCode ] = useState<scannedCodeType>({
-    decodedText: '',
-    result: {
-      text: '',
-      format: {
-        format: 0,
-        formatName: ''
-      },
-      debugData: {
-        decoderName: ''
-      }
-    }
-  })
-  const [ formValues, setFormValues ] = useState({
-    qty: 0
-  })
-  const formSubmitValues = {
-    code: scannedCode.decodedText,
-    ...formValues
-  }
-
-  const qtyRef = useRef<HTMLInputElement>(null)
-
-  const handleChanges = (e:ChangeEvent<HTMLInputElement>) => {
-    setFormValues({
-      ...formValues,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const onScanSuccess = (decodedText:any, decodedResult:any) => {
-    // handle decoded results here
-    console.log(`Scan result: ${decodedText}`, decodedResult)
-    setScannedCode({decodedText, result: decodedResult})
-    if (qtyRef.current != null) {
-      qtyRef.current.focus()
-    }
-  }
-
-  const config = {
-    fps: 10,
-    qrbox: {width: 320, height: 120},
-    rememberLastUsedCamera: true,
-    // Only support camera scan type.
-    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
-  }
-  useEffect(() => {
+export default function App() {
+  const [ session, setSession ] = useState<Session | null | any>(null)
+  // const [ currentUser, setCurrentUser ] = useState<any>()
+  // const [ settings, setSettings ] = useState(null)
   
-    const html5QrcodeScanner = new Html5QrcodeScanner("reader",
-      config,
-      /* verbose= */ false);
-      html5QrcodeScanner.render(onScanSuccess, undefined);
-  }, [])
-    
+  const getInitialSession = () => {
+    // NOTE: there's already session.user on session
+    // const user = supabase.auth.getUser()
+    //   .then(res => setCurrentUser(res.data.user))
+    //   .then(() => sessionStorage.setItem("sessionUser", currentUser))
+
+    const supabaseSession = supabase.auth.getSession()
+      .then(res => setSession(res.data.session))
+  }
+
+  useEffect(() => {
+    let mounted = true
+    // let sessionUser = sessionStorage.getItem("sessionUser")
+    // if (session) {
+    //   // TODO: set to global later
+    //   // setCurrentUser(sessionUser)
+    // }
+    if (!session) {
+      getInitialSession()
+    }
+
+    const data = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+    }).data
+    mounted = false
+  }, [session])
+  // console.log('user: ', currentUser)
+  // console.log('session: ', session)
+
   return (
-    <main className={styles.main}>
-
-      <div id="reader" className={styles.qrCodeScanner}></div>
-
-      <form className={styles.form}>
-        <input type="text" name='code' 
-          value={scannedCode?.decodedText} 
-          readOnly />
-        <input type="number" name='qty' 
-          ref={qtyRef}
-          onChange={(e) => handleChanges(e)} 
-          />
-
-        <button 
-          type="button"
-          onClick={() => {
-            console.log(formSubmitValues)
-            router.push(`/dashboard/?name=${formSubmitValues.code}&qty=${formSubmitValues.qty}`)
-          }}
-        >Submit</button>
-      </form>
-
-    </main>
-  )
+    // <SessionProvider session={session}>
+    <RecoilRoot>
+      <AuthProvider>
+        <ChakraProvider theme={theme}>
+          <main>
+            <TokoAuth/>
+          </main>
+        </ChakraProvider>
+      </AuthProvider>
+    </RecoilRoot>
+    // </SessionProvider>
+  ) 
 }
