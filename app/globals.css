@@ -100,6 +100,12 @@ a {
   text-decoration: none;
 }
 
+/* custom */
+
+main {
+  padding: 1rem;
+}
+
 #reader {
   overflow: hidden;
   position: relative;
