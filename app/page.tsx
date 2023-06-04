@@ -9,22 +9,15 @@ import { supabase } from '@libs/connections/supabase'
 import { type Session } from '@supabase/gotrue-js/src/lib/types'
 import { useEffect, useState } from 'react'
 // import { PageProps } from 'types/types'
-import { AuthProvider } from '@contexts/authContext'
+import { AuthProvider, useAuth } from '@contexts/authContext'
 import TokoAuth from '@/libs/components/TokoAuth'
 
 export default function App() {
-  // const [ session, setSession ] = useState<Session | null | any>(null)
-  
-  const getInitialSession = () => {
-    const supabaseSession = supabase.auth.getSession()
-      .then(res => {
-        console.log(res)
-        // if (res.data.session != null) {
-        //   localStorage.setItem('session', res.data.session)
-        // }
-      })
+  const { session, user, isLoadingSession } = useAuth()
+
+  if (isLoadingSession === false) {
+    console.log('session in app:', session)
   }
-  getInitialSession()
 
   return (
     <RecoilRoot>

@@ -16,7 +16,7 @@ const TokoAuth = () => {
     const { session, user, isLoadingSession } = useAuth()
     // const setSession = useSetRecoilState(sessionState)
     // console.log('session in TokoAuth:', session)
-    // console.log ('user', user)
+    // console.log ('user in TokoAuth', user)
     const toast = useToast()
     const toastIdRef = useRef<string | any>()
 
