@@ -14,8 +14,8 @@ import { useRef } from "react"
 
 const TokoAuth = () => {
     const { session, user, isLoadingSession } = useAuth()
-    const setSession = useSetRecoilState(sessionState)
-    // console.log('session in TokoAuth:', session)
+    // const setSession = useSetRecoilState(sessionState)
+    console.log('session in TokoAuth:', session)
     // console.log ('user', user)
     const toast = useToast()
     const toastIdRef = useRef<string | any>()
@@ -29,7 +29,8 @@ const TokoAuth = () => {
         action: () => {
             toastIdRef.current = toast({ title:'Logging Out...' })
             onModalClose(),
-            setSession(null),
+            // setSession(null),
+            sessionStorage.removeItem('tokoSession'),
             signOut()
             toast.update(toastIdRef.current, { description: 'Logged Out' })
         }

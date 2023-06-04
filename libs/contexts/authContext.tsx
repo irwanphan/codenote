@@ -26,39 +26,66 @@ type Props = {
 }
 
 export function AuthProvider({ children }: Props) {
-    const [ session, setSession ] = useRecoilState<Session | null | any>(sessionState)
+    // const [ session, setSession ] = useRecoilState<Session | null | any>(sessionState)
+    const [ session, setSession ] = useState<Session | null>(null)
+    const [ sessionExist, setSessionExist ] = useState<boolean>(false)
     const [ user, setUser ] = useState<any>(null)
     const [ isLoadingSession, setIsLoadingSession ] = useState<boolean>(true)
+
+    
+    // const session = sessionData ? JSON.parse(sessionData) : null;
+    // useEffect(() => {
+    //     if (!sessionExist) {
+    //         if (sessionData) {
+    //             setSession(JSON.parse(sessionData))
+    //             setSessionExist(true)
+    //         }
+    //     }
+    // }, [sessionData])
   
     const getInitialSession = () => {
-        // NOTE: there's already session.user on session
-        // const user = supabase.auth.getUser()
-        //   .then(res => setCurrentUser(res.data.user))
-        //   .then(() => sessionStorage.setItem("sessionUser", currentUser))
         const supabaseSession = supabase.auth.getSession()
-            .then(res => setSession(res.data.session))
+            .then(res => {
+                const sessionString = JSON.stringify(res.data.session);
+                sessionStorage.setItem('tokoSession', sessionString);
+            })
     }
 
+    const sessionData = typeof sessionStorage !== 'undefined' ?
+                        sessionStorage.getItem('tokoSession') : 
+                        null
+    
     useEffect(() => {
         const fetchSession = async () => {
             try {
-                if (!session) {
+                if (sessionData !== null && sessionData !== undefined) {
+                    setSessionExist(true)
+                } else
+                if (!sessionExist) {
                     getInitialSession()
+                    setSessionExist(true)
+                } else
+                if (sessionData) {
+                    setSession(JSON.parse(sessionData))
                 }
                 const data = supabase.auth.onAuthStateChange((_event, session) => {
                     setSession(session)
                 }).data
-        
-                if (session) {
-                    setUser(session.user)
-                }
+                    
                 setIsLoadingSession(false)
             } catch (error) {
                 console.log(error)
             }
         }
         fetchSession()
+    }, [sessionData])
+
+    useEffect(() => {
+        if (session) {
+            setUser(session.user)
+        }
     }, [session])
+
     // console.log('user: ', currentUser)
     // console.log('session: ', session)
 
