@@ -1,9 +1,12 @@
 'use client'
 
-import { Html5QrcodeScanType, Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5QrcodeScanType, Html5QrcodeScanner } from 'html5-qrcode'
 import styles from './page.module.css'
 import { ChangeEvent, useEffect, useState, useRef } from 'react'
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
+import FormSubmitButton from '@/libs/elements/FormSubmit'
+import { FiHome } from 'react-icons/fi'
+import { Box } from '@chakra-ui/react'
 
 type scannedCodeType = {
   decodedText: string,
@@ -72,8 +75,8 @@ export default function Home() {
   
     const html5QrcodeScanner = new Html5QrcodeScanner("reader",
       config,
-      /* verbose= */ false);
-      html5QrcodeScanner.render(onScanSuccess, undefined);
+      /* verbose= */ false)
+      html5QrcodeScanner.render(onScanSuccess, undefined)
   }, [])
     
   return (
@@ -98,6 +101,14 @@ export default function Home() {
           }}
         >Submit</button>
       </form>
+
+
+      <FormSubmitButton href="/" mr={2} px={3} 
+        position='fixed' bottom={4} left={4}
+      >
+        <Box as={FiHome} mr={1} />
+        Back
+      </FormSubmitButton>
 
     </main>
   )
