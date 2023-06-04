@@ -1,7 +1,7 @@
 'use client'
 import './globals.css'
 import type { AppProps } from 'next/app'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Divider } from '@chakra-ui/react'
 import theme from '@libs/theme'
 import { RecoilRoot } from 'recoil'
 
@@ -11,23 +11,27 @@ import { useEffect, useState } from 'react'
 // import { PageProps } from 'types/types'
 import { AuthProvider, useAuth } from '@contexts/authContext'
 import TokoAuth from '@/libs/components/TokoAuth'
+import FormSubmitButton from '@/libs/elements/FormSubmit'
 
 export default function App() {
-  const { session, user, isLoadingSession } = useAuth()
-
-  if (isLoadingSession === false) {
-    console.log('session in app:', session)
-  }
+  const { session, isLoadingSession } = useAuth();
 
   return (
-    <RecoilRoot>
-      <AuthProvider>
-        <ChakraProvider theme={theme}>
-          <main>
-            <TokoAuth/>
-          </main>
-        </ChakraProvider>
-      </AuthProvider>
-    </RecoilRoot>
+    <main>
+      <TokoAuth/>
+
+      { session && (
+        <>
+          <Divider my={4} />
+
+
+          <FormSubmitButton href="/sales" mr={2} px={3} 
+            position='fixed' bottom={4} right={4}
+          >
+            Scan
+          </FormSubmitButton>
+        </>
+      )}
+    </main>
   ) 
 }

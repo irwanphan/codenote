@@ -75,6 +75,10 @@ export function AuthProvider({ children }: Props) {
         setIsLoadingSession(false)
     }, [sessionExist, session])
 
+    useEffect(() => {
+        console.log('session loading: ', isLoadingSession);
+    }, [isLoadingSession, sessionExist, session])
+
     const value = {
         isLoadingSession,
         session,
