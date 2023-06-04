@@ -7,15 +7,15 @@ import SessionProfile from "@units/SessionProfile"
 import { LoadingBlockList } from "@elements/LoadingBlock"
 import { signInWithGoogle } from "@libs/connections/signIn"
 import { useAuth } from "@contexts/authContext"
-import { useSetRecoilState } from "recoil"
-import { sessionState } from "@contexts/session"
+// import { useSetRecoilState } from "recoil"
+// import { sessionState } from "@contexts/session"
 import { signOut } from "@libs/connections/signOut"
 import { useRef } from "react"
 
 const TokoAuth = () => {
     const { session, user, isLoadingSession } = useAuth()
     // const setSession = useSetRecoilState(sessionState)
-    console.log('session in TokoAuth:', session)
+    // console.log('session in TokoAuth:', session)
     // console.log ('user', user)
     const toast = useToast()
     const toastIdRef = useRef<string | any>()
