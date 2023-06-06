@@ -9,8 +9,6 @@ import { FiHome } from 'react-icons/fi'
 import { Box } from '@chakra-ui/react'
 import axios from 'axios'
 
-import { checkoutResolver, IFormInput } from "@interfaces//checkout"
-import { useForm, SubmitHandler, Resolver } from "react-hook-form"
 import { useAuth } from '@/libs/contexts/authContext'
 
 type scannedCodeType = {
@@ -46,9 +44,13 @@ export default function Home() {
   })
   const [ formValues, setFormValues ] = useState({
     qty: 0
+
   })
   const formSubmitValues = {
     code: scannedCode.decodedText,
+    userEmail: session!.user.email,
+    userName: session!.user.user_metadata.name,
+    userId: session!.user.id,
     ...formValues
   }
 
@@ -84,60 +86,18 @@ export default function Home() {
       html5QrcodeScanner.render(onScanSuccess, undefined)
   }, [])
 
-  const resolver: Resolver<IFormInput> = async (values) => {
-    return checkoutResolver(values)
-  }
   const [ isDisabled, setDisabled ] = useState(false)
-  const { handleSubmit, register, formState: { errors } } = useForm({
-    defaultValues: {
-        // address: '',
-        // city: '',
-        // province: '',
-        // postal: '',
-        total: 0,
-        // note: '',
-        orders: [],
-        user: { email: '', name: '' }
-    },
-    resolver
-  })
-  const createSale = (data:any) => axios.post('./api/sales', data)
+
+  const createSale = async (data:any) => {
+    try {
+      const res = await axios.post('/api/sales', data)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const createUserIfNotExist = (data:any) => axios.post('/api/users', data)
   
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    // console.log('running', data)
-    setDisabled
-    // setIsLoading(true)
-    // toast({title:'Submitting ...'})
-    // data.orders = checkCart
-    // data.total = total!
-    data.user.email = session!.user.email
-    data.user.name = session!.user.user_metadata.name
-    data.user.id = session!.user.id
-    console.log(data)
-
-    const userData = {
-        id: session!.user.id,
-        email: session!.user.email,
-        name: session!.user.user_metadata.name,
-        image: session!.user.user_metadata.picture
-    }
-
-    const user = await createUserIfNotExist(userData)
-    // console.log('user: ', user)
-
-    const purchase = await createSale(data)
-    // console.log('purchase: ', purchase)
-    
-    // TEST: comment localstorage.remove, setCart([]), and router.push
-    // localStorage.removeItem("cart")
-    // setCart([])
-    // toast({title:'Purchase order submitted', status:'success'})
-    // toast({title:'Redirecting ...'})
-    // setIsLoading(false)
-    // router.push(`/admin-area/purchases/${purchase.data.id}`)
-  }
-    
   return (
     <main className={styles.main}>
 
@@ -155,8 +115,9 @@ export default function Home() {
         <button 
           type="button"
           onClick={() => {
-            console.log(formSubmitValues)
-            handleSubmit(onSubmit)
+            // console.log(formSubmitValues)
+            // handleSubmit(onSubmit)
+            createSale(formSubmitValues)
             // router.push(`/dashboard/?name=${formSubmitValues.code}&qty=${formSubmitValues.qty}`)
           }}
         >Submit</button>
