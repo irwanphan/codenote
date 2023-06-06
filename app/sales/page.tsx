@@ -48,15 +48,15 @@ export default function Home() {
   })
   const formSubmitValues = {
     productId: scannedCode.decodedText,
-    userEmail: session!.user.email,
-    userId: session!.user.id,
+    userEmail: session?.user.email,
+    userId: session?.user.id,
     ...formValues
   }
   const userData = {
-    userEmail: session!.user.email,
-    userName: session!.user.user_metadata.name,
-    userId: session!.user.id,
-    userImage: session!.user.user_metadata.picture
+    userEmail: session?.user.email,
+    userName: session?.user.user_metadata.name,
+    userId: session?.user.id,
+    userImage: session?.user.user_metadata.picture
   }
 
   const qtyRef = useRef<HTMLInputElement>(null)
