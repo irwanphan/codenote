@@ -47,11 +47,16 @@ export default function Home() {
 
   })
   const formSubmitValues = {
-    code: scannedCode.decodedText,
+    productId: scannedCode.decodedText,
+    userEmail: session!.user.email,
+    userId: session!.user.id,
+    ...formValues
+  }
+  const userData = {
     userEmail: session!.user.email,
     userName: session!.user.user_metadata.name,
     userId: session!.user.id,
-    ...formValues
+    userImage: session!.user.user_metadata.picture
   }
 
   const qtyRef = useRef<HTMLInputElement>(null)
@@ -88,15 +93,15 @@ export default function Home() {
 
   const [ isDisabled, setDisabled ] = useState(false)
 
-  const createSale = async (data:any) => {
+  const handleSubmit = async (data:any) => {
     try {
+      const user = await axios.post('/api/users', userData)
       const res = await axios.post('/api/sales', data)
       console.log(res.data)
     } catch (error) {
       console.log(error)
     }
   }
-  const createUserIfNotExist = (data:any) => axios.post('/api/users', data)
   
   return (
     <main className={styles.main}>
@@ -104,7 +109,7 @@ export default function Home() {
       <div id="reader" className={styles.qrCodeScanner}></div>
 
       <form className={styles.form}>
-        <input type="text" name='code' 
+        <input type="text" name='productId' 
           value={scannedCode?.decodedText} 
           readOnly />
         <input type="number" name='qty' 
@@ -117,7 +122,7 @@ export default function Home() {
           onClick={() => {
             // console.log(formSubmitValues)
             // handleSubmit(onSubmit)
-            createSale(formSubmitValues)
+            handleSubmit(formSubmitValues)
             // router.push(`/dashboard/?name=${formSubmitValues.code}&qty=${formSubmitValues.qty}`)
           }}
         >Submit</button>

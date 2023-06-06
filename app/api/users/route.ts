@@ -1,49 +1,41 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@libs/connections/prisma'
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextApiRequest, res:NextApiResponse) {
+export async function POST(req:NextRequest, res:NextResponse) {
     try {
-        const users = await prisma.user.findMany({
-            orderBy: {
-                id: 'desc'
-            }
-        })
-        // console.log(users)
-        return res.status(200).json(users)
-    }
-    catch (e) {
-        console.log(e)
-        return res.status(500).json({ message: `${e}` })
-    }
-}
+        const json = await req.json();
+        const { userId, userEmail, userName, userImage } = json
 
-export async function POST(req:NextApiRequest, res:NextApiResponse) {
-    try {
-        const { id, email, name, image } = req.body
+        // console.log(json)
 
+        // const existingUser = 'test'
         const existingUser = await prisma.user.findUnique({
-            where: { email: email }
+            where: { email: userEmail }
         })
-        console.log(existingUser)
-
-        const code = id
+        
+        // console.log(existingUser)
 
         if (!existingUser) {
             const user = await prisma.user.create({
                 data: {
-                    code,
-                    email,
-                    name,
-                    image
+                    code: userId,
+                    email: userEmail,
+                    name: userName,
+                    image: userImage
                 }
             })
+            return new NextResponse(JSON.stringify(user), {
+                status: 201,
+                headers: { "Content-Type": "application/json" },
+            })
             // console.log(user)
-            return res.status(200).json(user)
         }
-        return res.status(200).json(existingUser)
+        return new NextResponse(JSON.stringify(existingUser), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+        })
 
     } catch (e:any) {
         console.log(e)
-        return res.status(500).json({ message: `${e.status}` })
     }
 }
