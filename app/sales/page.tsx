@@ -101,7 +101,9 @@ export default function Home() {
     },
     resolver
   })
-  const createSale = (data:any) => axios.post('/api/sales', data)
+  const createSale = (data:any) => axios.post('./api/sales', data)
+  const createUserIfNotExist = (data:any) => axios.post('/api/users', data)
+  
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     // console.log('running', data)
     setDisabled
@@ -114,14 +116,14 @@ export default function Home() {
     data.user.id = session!.user.id
     console.log(data)
 
-    // const userData = {
-    //     id: session!.user.id,
-    //     email: session!.user.email,
-    //     name: session!.user.user_metadata.name,
-    //     image: session!.user.user_metadata.picture
-    // }
+    const userData = {
+        id: session!.user.id,
+        email: session!.user.email,
+        name: session!.user.user_metadata.name,
+        image: session!.user.user_metadata.picture
+    }
 
-    // const user = await createUserIfNotExist(userData)
+    const user = await createUserIfNotExist(userData)
     // console.log('user: ', user)
 
     const purchase = await createSale(data)
@@ -154,7 +156,7 @@ export default function Home() {
           type="button"
           onClick={() => {
             console.log(formSubmitValues)
-
+            handleSubmit(onSubmit)
             // router.push(`/dashboard/?name=${formSubmitValues.code}&qty=${formSubmitValues.qty}`)
           }}
         >Submit</button>
