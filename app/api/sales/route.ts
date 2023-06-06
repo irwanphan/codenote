@@ -5,7 +5,7 @@ export async function POST(req:NextRequest, res:NextResponse) {
     try {
         const json = await req.json();
     
-        console.log(json)
+        // console.log(json)
 
         const { productId, qty, userId, userEmail } = json
 

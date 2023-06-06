@@ -96,8 +96,10 @@ export default function Home() {
   const handleSubmit = async (data:any) => {
     try {
       const user = await axios.post('/api/users', userData)
-      const res = await axios.post('/api/sales', data)
-      console.log(res.data)
+        .then(res => axios.post('/api/sales', data))
+        .then(ref => router.push(`/dashboard`))
+      // const res = await axios.post('/api/sales', data)
+      // router.push(`/dashboard`)
     } catch (error) {
       console.log(error)
     }
@@ -123,7 +125,7 @@ export default function Home() {
             // console.log(formSubmitValues)
             // handleSubmit(onSubmit)
             handleSubmit(formSubmitValues)
-            // router.push(`/dashboard/?name=${formSubmitValues.code}&qty=${formSubmitValues.qty}`)
+            router.push(`/`)
           }}
         >Submit</button>
       </form>
