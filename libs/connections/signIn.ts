@@ -24,4 +24,8 @@ export async function signInWithGoogle() {
             redirectTo: getURL()
         }
     })
+    if (error) {
+        console.log(error)
+        return error
+    }
 }
