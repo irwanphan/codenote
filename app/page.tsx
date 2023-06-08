@@ -14,17 +14,12 @@ export default function App() {
   const [ salesData, setSalesData ] = useState<any>(null)
   const [ isLoading, setIsLoading ] = useState<boolean>(true)
 
-  const fetchData = async () => {
-    const user = await axios.get('/api/sales').then(res => console.log(res))
-  }
+  const { sales, isLoadingSales } = useSales()
 
   useEffect(() => {
-    if (session) {
-      fetchData()
-    }
-    setIsLoading(false)
-  }, [])
-
+    console.log(sales)
+  }, [sales])
+  
   // if (isLoadingSession || isLoading) return (
   //   <>loading</>
   // )
@@ -35,7 +30,7 @@ export default function App() {
 
           <Divider my={4} />
 
-            {salesData?.map((sale:any, index:number) => {
+            {/* {salesData?.map((sale:any, index:number) => {
               return(
                 <Box key={index} p={4} mb={4} bg='gray.100' borderRadius='md'>
                   <Box as='h3' mb={2} fontWeight='bold'>
@@ -49,7 +44,7 @@ export default function App() {
                   </Box>
                 </Box>  
               )
-            })}
+            })} */}
 
           <FormSubmitButton href="/sales" mr={2} px={3} 
             position='fixed' bottom={4} right={4}
@@ -59,4 +54,8 @@ export default function App() {
           </FormSubmitButton>
     </main>
   ) 
+}
+
+function useSales(): { sales: any; isLoadingSales: any } {
+  throw new Error('Function not implemented.')
 }
