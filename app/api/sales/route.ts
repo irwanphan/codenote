@@ -15,7 +15,8 @@ export async function GET(req:NextRequest, res:NextResponse) {
                 id: 'desc'
             }
         })
-        // console.log(purchases)
+        // console.log('sales')
+
         return new NextResponse(JSON.stringify(sales), {
             status: 201,
             headers: { "Content-Type": "application/json" },
