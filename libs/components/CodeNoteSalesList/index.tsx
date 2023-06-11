@@ -2,7 +2,7 @@ import { LoadingBlockList } from "@/libs/elements/LoadingBlock"
 import { useFetchSales } from "@/libs/hooks/sales/useFetchSales"
 import { Box, Text } from "@chakra-ui/react"
 
-const ScannedSalesList = () => {
+const CodeNoteSalesList = () => {
     const { sales, isLoadingSales } = useFetchSales()
     if (isLoadingSales) return (<LoadingBlockList/>)
 
@@ -36,4 +36,4 @@ const ScannedSalesList = () => {
     )
 }
 
-export default ScannedSalesList
+export default CodeNoteSalesList
