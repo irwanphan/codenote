@@ -28,10 +28,12 @@ type scannedCodeType = {
 
 const audioPath = '/static/beep6pixabay.mp3'
 
-const beep:any = new UIFx( audioPath, {
-  volume: 0.4, // number between 0.0 ~ 1.0
-  throttleMs: 100
-})
+let beep: UIFx | null = null
+
+// const beep:any = new UIFx( audioPath, {
+//   volume: 0.4, // number between 0.0 ~ 1.0
+//   throttleMs: 100
+// })
 
 const CreateSalesPage = () => {
   const { session } = useAuth()
@@ -80,7 +82,7 @@ const CreateSalesPage = () => {
     // handle decoded results here
     // console.log(`Scan result: ${decodedText}`, decodedResult)
     setScannedCode({decodedText, result: decodedResult})
-    if (qtyRef.current != null) {
+    if (qtyRef.current != null && beep != null) {
       qtyRef.current.focus()
       beep.play()
     }
@@ -95,6 +97,11 @@ const CreateSalesPage = () => {
   }
   useEffect(() => {  
     if (typeof window !== 'undefined') {
+      beep = new UIFx(audioPath, {
+        volume: 0.4,
+        throttleMs: 100,
+      })
+
       const html5QrcodeScanner = new Html5QrcodeScanner("reader",
         config,
         /* verbose= */ false)
