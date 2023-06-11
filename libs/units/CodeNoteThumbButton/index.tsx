@@ -2,10 +2,13 @@ import FormSubmitButton from "@/libs/elements/FormSubmit"
 import { Box, Flex } from "@chakra-ui/react"
 import { BiScan } from "react-icons/bi"
 
+interface CodeNoteThumbButtonProps {
+    href?: string
+}
 
-const CodeNoteThumbButton = () => {
+const CodeNoteThumbButton = ({href = '/sales/create'}: CodeNoteThumbButtonProps) => {
     return (
-        <FormSubmitButton href="/sales" 
+        <FormSubmitButton href={href} 
             position='fixed' 
             bottom={0} left={6}
             px={4} pt={12} pb={10}
