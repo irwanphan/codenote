@@ -28,13 +28,10 @@ type scannedCodeType = {
 
 const audioPath = '/static/beep6pixabay.mp3'
 
-const beep:any = new UIFx(
-  audioPath,
-  {
-    volume: 0.4, // number between 0.0 ~ 1.0
-    throttleMs: 100
-  }
-)
+const beep:any = new UIFx( audioPath, {
+  volume: 0.4, // number between 0.0 ~ 1.0
+  throttleMs: 100
+})
 
 const CreateSalesPage = () => {
   const { session } = useAuth()
@@ -97,10 +94,12 @@ const CreateSalesPage = () => {
     supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
   }
   useEffect(() => {  
-    const html5QrcodeScanner = new Html5QrcodeScanner("reader",
-      config,
-      /* verbose= */ false)
-      html5QrcodeScanner.render(onScanSuccess, undefined)
+    if (typeof window !== 'undefined') {
+      const html5QrcodeScanner = new Html5QrcodeScanner("reader",
+        config,
+        /* verbose= */ false)
+        html5QrcodeScanner.render(onScanSuccess, undefined)
+    }
   }, [])
 
   const [ isDisabled, setDisabled ] = useState(false)
