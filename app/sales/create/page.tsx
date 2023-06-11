@@ -90,7 +90,10 @@ const CreateSalesPage = () => {
 
   const config = {
     fps: 10,
-    // qrbox: {width: 320, height: 120},
+    qrbox: {
+      width: 240, 
+      height: 160
+    },
     rememberLastUsedCamera: true,
     // Only support camera scan type.
     supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
@@ -127,7 +130,10 @@ const CreateSalesPage = () => {
     <Box p={3} mb={16} >
 
       <Box id="reader" className={styles.qrCodeScanner} 
-        maxHeight='15rem'
+        margin='0 auto 2rem'
+        maxH='15rem'
+        maxW='20rem'
+        borderRadius={4}
       />
 
       <form className={styles.form}>
