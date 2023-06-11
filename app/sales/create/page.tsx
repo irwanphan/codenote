@@ -108,7 +108,9 @@ const CreateSalesPage = () => {
   return (
     <Box p={3} mb={16} >
 
-      <Box id="reader" className={styles.qrCodeScanner} />
+      <Box id="reader" className={styles.qrCodeScanner} 
+        maxHeight='8rem'
+      />
 
       <form className={styles.form}>
         <small>Scanned Code:</small>

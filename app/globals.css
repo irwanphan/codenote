@@ -106,8 +106,8 @@ a {
   position: relative;
 }
 #reader__scan_region img {
-  margin: 3rem auto 0;
-  width: 7rem;
+  margin: 0rem auto 2rem;
+  width: 5rem;
 }
 #reader__dashboard {
   position: absolute;
