@@ -11,6 +11,8 @@ import axios from 'axios'
 
 import { useAuth } from '@/libs/contexts/authContext'
 import UIFx from 'uifx'
+import LoadingOverlay from '@/libs/elements/LoadingOverlay'
+import { set } from 'react-hook-form'
 
 type scannedCodeType = {
   decodedText: string,
@@ -30,14 +32,11 @@ const audioPath = '/static/beep6pixabay.mp3'
 
 let beep: UIFx | null = null
 
-// const beep:any = new UIFx( audioPath, {
-//   volume: 0.4, // number between 0.0 ~ 1.0
-//   throttleMs: 100
-// })
-
 const CreateSalesPage = () => {
   const { session } = useAuth()
   const router = useRouter()
+
+  const [ isLoading, setLoading ] = useState(false)
 
   const [ scannedCode, setScannedCode ] = useState<scannedCodeType>({
     decodedText: '',
@@ -129,6 +128,8 @@ const CreateSalesPage = () => {
   return (
     <Box p={3} mb={16} >
 
+      { isLoading && <LoadingOverlay />}
+
       <Box id="reader" className={styles.qrCodeScanner} 
         margin='0 auto 2rem'
         // maxH='200px'
@@ -157,6 +158,7 @@ const CreateSalesPage = () => {
           onClick={() => {
             // console.log(formSubmitValues)
             // handleSubmit(onSubmit)
+            setLoading(true)
             handleSubmit(formSubmitValues)
             // router.push(`/`)
           }}
