@@ -89,7 +89,7 @@ const CreateSalesPage = () => {
   }
 
   const config = {
-    fps: 10,
+    fps: 5,
     qrbox: {
       width: 240, 
       height: 160
@@ -131,7 +131,7 @@ const CreateSalesPage = () => {
 
       <Box id="reader" className={styles.qrCodeScanner} 
         margin='0 auto 2rem'
-        maxH='200px'
+        // maxH='200px'
         maxW='280px'
         borderRadius={4}
       />
