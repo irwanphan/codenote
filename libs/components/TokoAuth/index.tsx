@@ -11,6 +11,7 @@ import { useAuth } from "@contexts/authContext"
 // import { sessionState } from "@contexts/session"
 import { signOut } from "@libs/connections/signOut"
 import { useRef } from "react"
+import { FiList } from "react-icons/fi"
 
 const TokoAuth = () => {
     const { session, user, isLoadingSession } = useAuth()
@@ -55,8 +56,8 @@ const TokoAuth = () => {
                     paddingLeft={2}>
                     <SessionProfile session={session}/>
                 </Box>
-                <FormSubmitButton href="/dashboard" mr={2} px={3} >
-                    Dashboard
+                <FormSubmitButton href="/sales" mr={2} px={3} >
+                    <Box as={FiList} mr={2} /> Sales
                 </FormSubmitButton>
                 <FormSubmitButton notLink px={3}
                     onClick={() => onModalOpen()}>

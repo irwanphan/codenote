@@ -1,6 +1,31 @@
 import prisma from '@libs/connections/prisma'
 import { NextRequest, NextResponse } from "next/server";
 
+// get all purchases
+export async function GET(req:NextRequest, res:NextResponse) {
+    try {
+        // const json = await req.json();
+
+        const sales = await prisma.sales.findMany({
+            include: {
+                detail: true,
+                // shipments: true
+            },
+            orderBy: {
+                id: 'desc'
+            }
+        })
+        // console.log('sales')
+
+        return new NextResponse(JSON.stringify(sales), {
+            status: 201,
+            headers: { "Content-Type": "application/json" },
+        })
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 export async function POST(req:NextRequest, res:NextResponse) {
     try {
         const json = await req.json();
@@ -53,8 +78,8 @@ export async function POST(req:NextRequest, res:NextResponse) {
           }
         }
         return new NextResponse(JSON.stringify(json_response), {
-          status: 201,
-          headers: { "Content-Type": "application/json" },
+            status: 201,
+            headers: { "Content-Type": "application/json" },
         })
     } catch (error: any) {
         console.log(error)
