@@ -23,8 +23,12 @@ export default function App() {
 
           <ScannedSalesList />
 
-          <FormSubmitButton href="/sales" mr={2} px={3} 
-            position='fixed' bottom={4} right={4}
+          <FormSubmitButton href="/sales" 
+            position='fixed' 
+            bottom={0} left={6}
+            px={4} pt={12} pb={8}
+            borderTopRadius={32}
+            borderBottom={0}
           >
           <Box as={FiDivideSquare} mr={1} />
             Scan
