@@ -6,7 +6,7 @@ import { ChangeEvent, useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import FormSubmitButton from '@/libs/elements/FormSubmit'
 import { FiHome } from 'react-icons/fi'
-import { Box } from '@chakra-ui/react'
+import { Box, Input } from '@chakra-ui/react'
 import axios from 'axios'
 
 import { useAuth } from '@/libs/contexts/authContext'
@@ -79,7 +79,7 @@ const CreateSalesPage = () => {
 
   const config = {
     fps: 10,
-    qrbox: {width: 320, height: 120},
+    // qrbox: {width: 320, height: 120},
     rememberLastUsedCamera: true,
     // Only support camera scan type.
     supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
@@ -106,28 +106,35 @@ const CreateSalesPage = () => {
   }
   
   return (
-    <main className={styles.main}>
+    <Box p={3} mb={16} >
 
-      <div id="reader" className={styles.qrCodeScanner}></div>
+      <Box id="reader" className={styles.qrCodeScanner} />
 
       <form className={styles.form}>
-        <input type="text" name='productId' 
+        <small>Scanned Code:</small>
+        <Input type="text" name='productId'
+          mb={2}
           value={scannedCode?.decodedText} 
           readOnly />
-        <input type="number" name='qty' 
+
+        <small>Quantity:</small>
+        <Input type="number" name='qty' 
+          mb={2}
           ref={qtyRef}
           onChange={(e) => handleChanges(e)} 
           />
 
-        <button 
-          type="button"
+        <FormSubmitButton 
+          notLink
+          backgroundColor='green.100'
+          w='full'
           onClick={() => {
             // console.log(formSubmitValues)
             // handleSubmit(onSubmit)
             handleSubmit(formSubmitValues)
             router.push(`/`)
           }}
-        >Submit</button>
+        >Submit</FormSubmitButton>
       </form>
 
 
@@ -138,7 +145,7 @@ const CreateSalesPage = () => {
         Back
       </FormSubmitButton>
 
-    </main>
+    </Box>
   )
 }
 

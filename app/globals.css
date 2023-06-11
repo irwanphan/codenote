@@ -101,11 +101,6 @@ a {
 }
 
 /* custom */
-
-main {
-  padding: 1rem;
-}
-
 #reader {
   overflow: hidden;
   position: relative;
@@ -117,31 +112,6 @@ main {
 #reader__dashboard {
   position: absolute;
   bottom: 0.5rem;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  width: 100%;
-  padding: 2rem;
-  min-height: 100vh;
-}
-form input {
-  padding: 0.5rem 0.75rem;
-  border: 0;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(var(--foreground-rgb), 0.2);
-  margin-bottom: 0.5rem;
-}
-form button {
-  border: none;
-  border-radius: 0.5rem;
-  background-color: tomato;
-  color: bisque;
-  padding: 0.5rem 0.75rem;
-  cursor: pointer;
-  font-weight: 500;
 }
 
 @media (prefers-color-scheme: dark) {
