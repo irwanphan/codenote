@@ -10,6 +10,7 @@ import { Box, Input } from '@chakra-ui/react'
 import axios from 'axios'
 
 import { useAuth } from '@/libs/contexts/authContext'
+import UIFx from 'uifx'
 
 type scannedCodeType = {
   decodedText: string,
@@ -24,6 +25,16 @@ type scannedCodeType = {
     }
   }
 }
+
+const audioPath = '/static/beep6pixabay.mp3'
+
+const beep:any = new UIFx(
+  audioPath,
+  {
+    volume: 0.4, // number between 0.0 ~ 1.0
+    throttleMs: 100
+  }
+)
 
 const CreateSalesPage = () => {
   const { session } = useAuth()
@@ -70,10 +81,11 @@ const CreateSalesPage = () => {
 
   const onScanSuccess = (decodedText:any, decodedResult:any) => {
     // handle decoded results here
-    console.log(`Scan result: ${decodedText}`, decodedResult)
+    // console.log(`Scan result: ${decodedText}`, decodedResult)
     setScannedCode({decodedText, result: decodedResult})
     if (qtyRef.current != null) {
       qtyRef.current.focus()
+      beep.play()
     }
   }
 
@@ -134,7 +146,7 @@ const CreateSalesPage = () => {
             // console.log(formSubmitValues)
             // handleSubmit(onSubmit)
             handleSubmit(formSubmitValues)
-            router.push(`/`)
+            // router.push(`/`)
           }}
         >Submit</FormSubmitButton>
       </form>

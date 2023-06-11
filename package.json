@@ -33,7 +33,8 @@
     "react-icons": "^4.9.0",
     "recoil": "^0.7.7",
     "supabase": "^1.64.8",
-    "typescript": "5.1.3"
+    "typescript": "5.1.3",
+    "uifx": "^2.0.7"
   },
   "devDependencies": {
     "encoding": "^0.1.13"
