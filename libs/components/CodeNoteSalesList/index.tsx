@@ -1,7 +1,7 @@
 import { LoadingBlockList } from "@/libs/elements/LoadingBlock"
 import { useFetchSales } from "@/libs/hooks/sales/useFetchSales"
-import { Box, Text } from "@chakra-ui/react"
-import { useEffect, useState } from "react"
+import { Box, Flex, Link, Text } from "@chakra-ui/react"
+import { FiArrowRightCircle } from "react-icons/fi"
 
 type CodeNoteSalesListProps = {
     itemsShowed?: number
@@ -9,27 +9,17 @@ type CodeNoteSalesListProps = {
 
 const CodeNoteSalesList = ({itemsShowed = 10}: CodeNoteSalesListProps) => {
     const { sales, isLoadingSales } = useFetchSales()
-    const [ haveMore, setHaveMore ] = useState<Boolean>(false)
 
-    // const haveMore = sales.length > itemsShowed
     if (isLoadingSales) return (<LoadingBlockList/>)
-
-    useEffect(() => {
-        if (!isLoadingSales) {
-            if (sales!.length > itemsShowed) {
-                setHaveMore(true)
-            }
-        }
-    }, [sales, isLoadingSales])
 
     return (
         <Box>
-            {sales?.slice(0, 10).map((sale:any, index:number) => {
+            {sales?.slice(0, itemsShowed).map((sale:any, index:number) => {
                 const createdAt = new Date(sale.createdAt).toLocaleString("id-ID", {
                     month: 'long', day: 'numeric', year: 'numeric', 
                     hour: 'numeric', minute: 'numeric', second: 'numeric'
                 })
-                console.log(createdAt)
+                // console.log(createdAt)
 
                 return(
                     <Box key={index} p={3} mb={2} 
@@ -54,10 +44,15 @@ const CodeNoteSalesList = ({itemsShowed = 10}: CodeNoteSalesListProps) => {
                     </Box>  
                 )
             })}
-            {haveMore && (
-                <Box>
-                    <Text>Have more</Text>
-                </Box>   
+            {sales!.length > itemsShowed && (
+                <Flex justifyContent='right'>
+                    <Link href="/sales" >
+                        <Flex alignItems='baseline'>
+                            <Text mr={1}>Lihat semua</Text>
+                             <FiArrowRightCircle />
+                        </Flex>
+                    </Link>
+                </Flex>   
             )}
         </Box>
     )
