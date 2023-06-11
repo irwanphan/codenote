@@ -3,18 +3,19 @@ import { useFetchSales } from "@/libs/hooks/sales/useFetchSales"
 import { Box, Flex, Link, Text } from "@chakra-ui/react"
 import { FiArrowRightCircle } from "react-icons/fi"
 
-type CodeNoteSalesListProps = {
+interface CodeNoteSalesListProps {
     itemsShowed?: number
+    showAll?: boolean
 }
 
-const CodeNoteSalesList = ({itemsShowed = 10}: CodeNoteSalesListProps) => {
+const CodeNoteSalesList = ({itemsShowed = 10, showAll = false}: CodeNoteSalesListProps) => {
     const { sales, isLoadingSales } = useFetchSales()
 
     if (isLoadingSales) return (<LoadingBlockList/>)
 
     return (
         <Box>
-            {sales?.slice(0, itemsShowed).map((sale:any, index:number) => {
+            {sales?.slice(0, showAll ? undefined : itemsShowed).map((sale:any, index:number) => {
                 const createdAt = new Date(sale.createdAt).toLocaleString("id-ID", {
                     month: 'long', day: 'numeric', year: 'numeric', 
                     hour: 'numeric', minute: 'numeric', second: 'numeric'
@@ -44,7 +45,7 @@ const CodeNoteSalesList = ({itemsShowed = 10}: CodeNoteSalesListProps) => {
                     </Box>  
                 )
             })}
-            {sales!.length > itemsShowed && (
+            {sales!.length > itemsShowed && showAll === false && (
                 <Flex justifyContent='right'>
                     <Link href="/sales" >
                         <Flex alignItems='baseline'>
