@@ -131,8 +131,8 @@ const CreateSalesPage = () => {
 
       <Box id="reader" className={styles.qrCodeScanner} 
         margin='0 auto 2rem'
-        maxH='15rem'
-        maxW='20rem'
+        maxH='200px'
+        maxW='280px'
         borderRadius={4}
       />
 
