@@ -127,7 +127,7 @@ const CreateSalesPage = () => {
     <Box p={3} mb={16} >
 
       <Box id="reader" className={styles.qrCodeScanner} 
-        maxHeight='8rem'
+        maxHeight='15rem'
       />
 
       <form className={styles.form}>
